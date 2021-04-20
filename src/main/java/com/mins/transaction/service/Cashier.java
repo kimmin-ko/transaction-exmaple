@@ -16,5 +16,4 @@ public class Cashier {
     public void checkout(List<String> isbns, String username) {
         isbns.forEach(isbn -> bokBookShop.purchase(isbn, username));
     }
-
 }

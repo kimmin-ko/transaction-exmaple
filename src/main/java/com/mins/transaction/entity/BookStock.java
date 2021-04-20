@@ -38,6 +38,12 @@ public class BookStock implements Persistable<String> {
         return true;
     }
 
+    public void increaseStock(Integer stock) {
+        Objects.requireNonNull(stock, "stock is required.");
+
+        this.stock += stock;
+    }
+
     public void decreaseStock(Integer stock) {
         Objects.requireNonNull(stock, "stock is required.");
 
