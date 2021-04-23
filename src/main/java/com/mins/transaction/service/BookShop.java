@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class BookShop {
     private final BookRepository bookRepository;
     private final BookStockRepository bookStockRepository;
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void purchase(final String isbn, final String username) {
         Book book = bookRepository.findById(isbn).orElseThrow(EntityNotFoundException::new);
 
@@ -74,11 +73,11 @@ public class BookShop {
 
         sleep(threadName);
 
-//        em.flush();
-//        em.clear();
+        em.flush();
+        em.clear();
 
-//        bookStock = bookStockRepository.findById(isbn).orElseThrow(EntityNotFoundException::new);
-//        System.out.println(threadName + " - Book stock is " + bookStock.getStock());
+        bookStock = bookStockRepository.findById(isbn).orElseThrow(EntityNotFoundException::new);
+        System.out.println(threadName + " - Book stock is " + bookStock.getStock());
 
         return bookStock.getStock();
     }

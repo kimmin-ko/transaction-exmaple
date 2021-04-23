@@ -1,6 +1,5 @@
 package com.mins.transaction.service;
 
-import com.fasterxml.jackson.databind.deser.std.StdDelegatingDeserializer;
 import com.mins.transaction.entity.Account;
 import com.mins.transaction.entity.BookStock;
 import com.mins.transaction.repository.AccountRepository;
@@ -99,13 +98,8 @@ class BookShopTest {
             assertThat(readStock).isEqualTo(15);
         }, "Thread2");
 
-        thread1.start();
-
-        Thread.sleep(2000);
-
-        thread2.start();
-
-        Thread.sleep(6000);
+        thread1.start(); Thread.sleep(2000);
+        thread2.start(); Thread.sleep(6000);
     }
 
     @Test
@@ -122,21 +116,16 @@ class BookShopTest {
             assertThat(readStock).isEqualTo(10);
         }, "Thread2");
 
-        thread1.start();
-
-        Thread.sleep(2000);
-
-        thread2.start();
-
-        Thread.sleep(6000);
+        thread1.start(); Thread.sleep(2000);
+        thread2.start(); Thread.sleep(6000);
     }
 
     @Test
-    @DisplayName("")
-    void test() throws InterruptedException {
+    @DisplayName("checkStock 메서드에서 같은 쿼리를 실행했을 때 일관성있는 값을 읽어야함")
+    void transaction_isolation_repeatable_read_test() throws InterruptedException {
         /* READ_UNCOMMITTED & READ_COMMITED
          * Thread1이 0001 레코드를 읽었지만 Thread2는 해당 레코드를 수정할 수 있음.
-         * Thread1이 다시 001 레코드를 읽으면 변경된 값을 읽음
+         * Thread1이 다시 0001 레코드를 읽으면 변경된 값을 읽음
          * Non-Repeatable Read 문제 발생
          *
          * ------- 이론적으론 두 격리 수준 모두 Non-Repeatable Read 문제가 발생해야 하지만
@@ -154,13 +143,8 @@ class BookShopTest {
         Thread thread1 = new Thread(() -> bookShop.checkStock(isbn), "Thread1");
         Thread thread2 = new Thread(() -> bookShop.increaseStock(isbn, stock), "Thread2");
 
-        thread1.start();
-
-        Thread.sleep(2000);
-
-        thread2.start();
-
-        Thread.sleep(6000);
+        thread1.start(); Thread.sleep(2000);
+        thread2.start(); Thread.sleep(6000);
     }
 
 }
