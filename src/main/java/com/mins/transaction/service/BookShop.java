@@ -25,7 +25,7 @@ public class BookShop {
     private final BookRepository bookRepository;
     private final BookStockRepository bookStockRepository;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void purchase(final String isbn, final String username) {
         Book book = bookRepository.findById(isbn).orElseThrow(EntityNotFoundException::new);
 
